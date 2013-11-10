@@ -1,3 +1,6 @@
 uploader/static
 *.pyc
 .*.swp
+*.log
+*.pot
+local_settings.py
