@@ -3,4 +3,7 @@ from django.shortcuts import render
 
 def index(request):
     #return HttpResponse("hey!")
-    return render(request, 'uploader/index.html', )
+    if request.method == 'POST':
+        pass
+    else:
+        return render(request, 'uploader/index.html', )
