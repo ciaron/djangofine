@@ -46,11 +46,12 @@
         $("#fine-uploader").fineUploader({
             debug: true,
             request: {
+                // note trailing slash for Django POST
                 endpoint: '/upload/'
             },
             deleteFile: {
                 enabled: true,
-                endpoint: '/upload/'
+                endpoint: '/upload'
             },
             retry: {
                enableAuto: true

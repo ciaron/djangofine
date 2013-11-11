@@ -5,7 +5,6 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^$', 'uploader.views.index', name='index'),
-    url(r'^upload/$', 'uploader.views.upload', {}, 'upload'),
-    url(r'^upload/(?P<need_to_delete>.*)$', "uploader.views.upload_delete", {}, 'upload_delete'),
-
+    url(r'^upload/$', 'uploader.views.upload', name='upload'),
+    url(r'^upload/(?P<need_to_delete>.*)$', "uploader.views.upload_delete", name='upload_delete'),
 )
