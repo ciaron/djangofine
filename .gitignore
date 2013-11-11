@@ -1,4 +1,6 @@
 uploader/static
+s3uploader/static
+env
 *.pyc
 .*.swp
 *.log
