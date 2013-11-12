@@ -1,4 +1,5 @@
 uploader/static
+upload/
 s3uploader/static
 env
 *.pyc
