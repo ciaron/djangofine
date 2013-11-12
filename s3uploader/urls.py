@@ -14,6 +14,6 @@ urlpatterns = patterns('',
     url(r'^$', 's3uploader.views.home', name='home'),
     url(r'^signature', 's3uploader.views.handle_s3', name="s3_signee"),
     url(r'^delete', 's3uploader.views.handle_s3', name='s3_delete'),
-    url(r'^success', 's3uploader.views.success_redirect_endpoint', name="s3_succes_endpoint")
+    url(r'^success', 's3uploader.views.success_redirect_endpoint', name="s3_success_endpoint")
 )
 
