@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 AWS_CLIENT_SECRET_KEY = os.getenv("AWS_CLIENT_SECRET_KEY") 
@@ -48,9 +49,13 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djcelery',
     'uploader',
     's3uploader',
 )
+
+CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'
+#CELERY_RESULT_BACKEND='djcelery.backends.cache:CacheBackend'
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',

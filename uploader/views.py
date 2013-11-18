@@ -6,14 +6,16 @@ from uploader import settings
 from uploader import qqFileUploader
 from uploader.models import Image
 
+from uploader.tasks import process
 import os
 
 def index(request):
-    #return HttpResponse("hey!")
+    # show an upload button and a list of images.
     if request.method == 'POST':
         pass
     else:
-        return render(request, 'uploader/index.html', )
+        image_list = Image.objects.all()
+        return render_to_response('uploader/index.html',  {'image_list': image_list})
 
 @csrf_exempt
 def upload(request):
@@ -24,20 +26,25 @@ def upload(request):
     # file is in request.POST (request.FILES?)
     # how do we know if handleUpload() has dealt with chunked or normal files?
 
-    file = request.FILES['qqfile']
+    _file = request.FILES['qqfile'] # don't get this with S3?
+    ##print type(file) # <class 'django.core.files.uploadedfile.InMemoryUploadedFile'>
     image = Image()
-    image.image = file
-    image.width = image.image.width
-    image.height = image.image.height
-    image.title = "%s_%s" % (request.POST['qquuid'], request.POST['qqfilename'])
+    image.uuid = request.POST['qquuid']
+
+    # width and height will be set in postprocessing
+    #image.width = image.image.width
+    #image.height = image.image.height
+    #image.title = "%s_%s" % (request.POST['qquuid'], request.POST['qqfilename'])
     image.save()
+    taskresult = process.delay(image.uuid)
 
     return HttpResponse(result)
 
 @csrf_exempt
 def upload_delete(request, need_to_delete):
-
     qqFileUploader.deleteFile(need_to_delete)
-
     return HttpResponse("ok")
 
+
+def image_detail(request):
+    HttpResponse("not implemented yet")
