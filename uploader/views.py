@@ -8,6 +8,7 @@ from uploader.models import Image
 
 from uploader.tasks import process
 import os
+import json
 
 def index(request):
     # show an upload button and a list of images.
@@ -19,24 +20,26 @@ def index(request):
 
 @csrf_exempt
 def upload(request):
-    uploader = qqFileUploader(request, os.path.join(settings.MEDIA_ROOT ,"upload/"), [".jpg", ".png", ".ico", ".*", ".avi"], 2147483648)
+    #uploader = qqFileUploader(request, os.path.join(settings.MEDIA_ROOT ,"upload/"), [".jpg", ".png", ".ico", ".*", ".avi"], 2147483648)
+    uploader = qqFileUploader(request, settings.MEDIA_ROOT, [".jpg", ".png", ".ico", ".*", ".avi"], 2147483648)
     
-    result = uploader.handleUpload()
+    result = uploader.handleUpload() # returns, e.g. {'success': true}
 
-    # file is in request.POST (request.FILES?)
-    # how do we know if handleUpload() has dealt with chunked or normal files?
-
-    _file = request.FILES['qqfile'] # don't get this with S3?
     ##print type(file) # <class 'django.core.files.uploadedfile.InMemoryUploadedFile'>
-    image = Image()
-    image.uuid = request.POST['qquuid']
 
     # width and height will be set in postprocessing
     #image.width = image.image.width
     #image.height = image.image.height
     #image.title = "%s_%s" % (request.POST['qquuid'], request.POST['qqfilename'])
-    image.save()
-    taskresult = process.delay(image.uuid)
+
+    # ONLY SAVE/PROCESS THIS IF THE UPLOAD HAS SUCCEEDED!
+    d = json.loads(result) 
+    if d['success'] == True:
+        _file = request.FILES['qqfile'] # don't get this with S3?
+        image = Image()
+        image.uuid = request.POST['qquuid']
+        image.save()
+        taskresult = process.delay(image.uuid)
 
     return HttpResponse(result)
 
@@ -46,5 +49,6 @@ def upload_delete(request, need_to_delete):
     return HttpResponse("ok")
 
 
-def image_detail(request):
-    HttpResponse("not implemented yet")
+def image(request, image_id):
+    image = Image.objects.get(id=image_id)
+    return render_to_response('uploader/image.html',  {'image': image})

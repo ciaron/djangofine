@@ -69,7 +69,7 @@
 {% if image_list %}
     <ul>
     {% for image in image_list %}
-        <li><a href="/images/{{ image.id }}/">{{ image.title }}</a></li>
+        <li><a href="/image/{{ image.id }}/">{{ image.uuid }}</a></li>
     {% endfor %}
     </ul>
 {% else %}

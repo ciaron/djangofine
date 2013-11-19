@@ -15,7 +15,8 @@ from io import FileIO, BufferedWriter
 class qqFileUploader(object):
 
     BUFFER_SIZE = 10485760  # 10MB
-    UPLOAD_DIRECTORY = os.path.join(settings.MEDIA_ROOT ,"upload/")
+    #UPLOAD_DIRECTORY = os.path.join(settings.MEDIA_ROOT ,"upload/")
+    UPLOAD_DIRECTORY = settings.MEDIA_ROOT
 
     def __init__(self, request, uploadDirectory=None, allowedExtensions=None, sizeLimit=None):
         self.allowedExtensions = allowedExtensions or []
@@ -56,7 +57,7 @@ class qqFileUploader(object):
     def handleUpload(self, name=None):
 
         if not os.access(self.uploadDirectory, os.W_OK):
-            return json.dumps({"error": "Server error. Uploads directory isn't writable or executable."})
+            return json.dumps({"error": "Server error. Uploads directory isn't writable or executable: " + self.uploadDirectory})
 
 
         if 'CONTENT_TYPE' not in self.request.META:

@@ -19,10 +19,16 @@ def process(uuid):
     image.width=69
     image.height=42
     image.save()
-    #return "ProcessingDone"
 
 @app.task()
 def scale(uuid, size):
+
+    # New Method:
+    # 1. image has been uploaded to S3: fetch it
+    # 2. make 'size' argument 'sizes' list:
+    #    for size in sizes:
+    #      scale image
+    #      upload image to S3
 
     #logger = logging.getLogger('imagequeue.tasks')
     #logger.setLevel(logging.INFO)
