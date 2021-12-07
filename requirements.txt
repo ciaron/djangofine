@@ -2,3 +2,4 @@ Django==2.2.24
 Pillow==3.3.2
 boto==2.15.0
 wsgiref==0.1.2
+pillow>=8.3.2
